@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+
 namespace ToDoAPI
 {
     public class Program
@@ -7,6 +10,25 @@ namespace ToDoAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            // Adding Cors
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("OriginPolicy", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+            //TODOcontext services
+            builder.Services.AddDbContext<ToDoAPI.Models.ToDoContext>(
+                options =>
+                {
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("ToDoDB"));
+                    // Connection string from the app settings ^ 
+                }
+                );
+              
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -26,8 +48,9 @@ namespace ToDoAPI
 
             app.UseAuthorization();
 
-
             app.MapControllers();
+
+            app.UseCors();
 
             app.Run();
         }
