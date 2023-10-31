@@ -16,7 +16,7 @@ namespace ToDoAPI
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("OriginPolicy", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                    policy.WithOrigins("OriginPolicy", "http://todoapi.aidanmcquillan.com", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
                 });
             });
 
